@@ -1,0 +1,390 @@
+{
+	"info": {
+		"_postman_id": "7ea42f4f-bae7-4c22-b95d-360663f0e4db",
+		"name": "Alain_Symfony_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25415931"
+	},
+	"item": [
+		{
+			"name": "GET_ALL_ANIMALS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"// Vérification du statut de la réponse",
+							"pm.test(\"Statut de la réponse doit être à 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Vérification du type de contenu de la réponse",
+							"pm.test(\"Type de contenu est application/json\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+							"});",
+							"",
+							"// Extraction des données JSON de la réponse",
+							"pm.test(\"Extraction des données JSON\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.not.be.null;",
+							"    pm.globals.set(\"jsonData\", JSON.stringify(jsonData)); // Stockage des données dans une variable globale",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/animal",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"animal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST_NEW_ANIMAL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"    pm.test(\"Status code est === 201\", function () {",
+							"        pm.response.to.have.status(201);",
+							"    });",
+							"",
+							"    pm.test(\"La propriété 'id' doit exister\", function () {",
+							"        var jsonData = pm.response.json();",
+							"        pm.expect(jsonData).to.have.property('id');",
+							"    });",
+							"",
+							"    pm.test(\"La propriété 'name' doit être Tarek\", function () {",
+							"        var jsonData = pm.response.json();",
+							"        pm.expect(jsonData.name).to.equal('Tarek');",
+							"    });",
+							"",
+							"    pm.test(\"La propriété 'martialArt' doit exister\", function () {",
+							"        var jsonData = pm.response.json();",
+							"        pm.expect(jsonData).to.have.property('martialArt');",
+							"    });",
+							"",
+							"    pm.test(\"La propriété 'martialArt' doit être Tarekub\", function () {",
+							"        var jsonData = pm.response.json();",
+							"        pm.expect(jsonData.martialArt).to.equal('Tarekub');",
+							"    });",
+							"",
+							"    pm.test(\"La propriété 'averageSize' doit être égale à 1069\", function() {",
+							"        var jsonData = pm.response.json();",
+							"        pm.expect(jsonData.averageSize).to.equal(1069);",
+							"    });",
+							"",
+							"    // Extraction de la valeur de l'ID à partir des données JSON de la réponse",
+							"    pm.test(\"Extraction de la valeur de l'ID\", function () {",
+							"        var jsonData = pm.response.json();",
+							"        pm.expect(jsonData).to.not.be.null;",
+							"        var id = jsonData.id; // Remplacez \"id\" par la clé appropriée dans votre JSON",
+							"        pm.environment.set(\"id\", id); // Définition de la variable d'environnement \"id\"",
+							"    });",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Tarek\",\n    \"averageSize\": 1069,\n    \"averageLifeDuration\": 15,\n    \"phoneNumber\": \"+33 6 12 4 56 78\",\n    \"martialArt\": \"Tarekub\",\n    \"country\": 210\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/animal/new",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"animal",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_ANIMAL_BY_ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Status code est bien 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"La propriété 'name' doit exister\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.animal).to.have.property('name');",
+							"});",
+							"",
+							"pm.test(\"La propriété 'name' doit être 'Tarek'\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.animal.name).to.equal(\"Tarek\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/animal/{{id}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"animal",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT_UPDATE_ANIMAL_BY_ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"",
+							"// Vérification du statut de la réponse",
+							"pm.test(\"Statut de la réponse est 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Vérification du contenu mis à jour dans la réponse",
+							"pm.test(\"Vérification du contenu mis à jour\", function () {",
+							"    var updatedData = pm.response.json();",
+							"    pm.expect(updatedData.name).to.equal(\"Tarkoo\");",
+							"    pm.expect(updatedData.averageSize).to.equal(1070);",
+							"    pm.expect(updatedData.averageLifeDuration).to.equal(16);",
+							"    pm.expect(updatedData.phoneNumber).to.equal(\"+33 69 69 69 69 69\");",
+							"    pm.expect(updatedData.martialArt).to.equal(\"Demonstration\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Tarkoo\",\n    \"averageSize\": 1070,\n    \"averageLifeDuration\": 16,\n    \"phoneNumber\": \"+33 69 69 69 69 69\",\n    \"martialArt\": \"Demonstration\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/animal/{{id}}/edit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"animal",
+						"{{id}}",
+						"edit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH_UPDATE_ANIMAL_BY_ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"// Vérification du statut de la réponse",
+							"pm.test(\"Statut de la réponse est 200 Création OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Vérification du contenu mis à jour dans la réponse",
+							"pm.test(\"Vérification du contenu mis à jour\", function () {",
+							"    var updatedData = pm.response.json();",
+							"    pm.expect(updatedData.name).to.equal(\"Tarek le male alpha\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Tarek le male alpha\",\n    \"averageSize\": 1070,\n    \"averageLifeDuration\": 16,\n    \"phoneNumber\": \"+33 69 69 69 69 69\",\n    \"martialArt\": \"Demonstration\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/animal/{{id}}/edit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"animal",
+						"{{id}}",
+						"edit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE_ANIMAL_BY_ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has 'Animal supprimé' message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql('Animal supprimé');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/animal/{{id}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"animal",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

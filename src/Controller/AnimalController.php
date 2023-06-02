@@ -70,8 +70,8 @@ class AnimalController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_animals_edit', methods: ['PUT', 'PATCH'])]
-    public function edit(Request $request, Animal $animal, AnimalRepository $animalsRepository): Response
+    #[Route('/{id}/edit', name: 'app_animals_put', methods: ['PUT'])]
+    public function put(Request $request, Animal $animal, AnimalRepository $animalsRepository): Response
     {
         $data = json_decode($request->getContent(), true);
         $form = $this->createForm(AnimalType::class, $animal);
@@ -82,15 +82,29 @@ class AnimalController extends AbstractController
             //return $this->redirectToRoute('app_animals_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->json([
-            'animal' => $animal,
-            'message' => "L'animal a été modifié"
-        ], Response::HTTP_OK);
+        return $this->json(
+            $animal,
+            Response::HTTP_OK
+        );
+    }
 
-        // return $this->renderForm('animals/edit.html.twig', [
-        //     'animal' => $animal,
-        //     'form' => $form,
-        // ]);
+    #[Route('/{id}/edit', name: 'app_animals_patch', methods: ['PATCH'])]
+    public function patch(Request $request, Animal $animal, AnimalRepository $animalsRepository): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $form = $this->createForm(AnimalType::class, $animal);
+        $form->submit($data, false); // Second parameter is for "clear missing", false means it won't clear fields not in the request.
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $animalsRepository->save($animal, true);
+            //return $this->redirectToRoute('app_animals_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->json(
+            $animal,
+            Response::HTTP_OK
+        );
     }
 
     // #[Route('/{id}/edit', name: 'app_animal_edit', methods: ['GET', 'POST'])]
